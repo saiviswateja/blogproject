@@ -1,0 +1,16 @@
+.btn-circle.btn-xl { 
+    width: 70px; 
+    height: 70px; 
+    padding: 10px 16px; 
+    border-radius: 35px; 
+    font-size: 12px; 
+    text-align: center; 
+} 
+
+#button_navbar{
+    margin-left: 5%;
+}
+
+#button_navbar_1{
+    margin-left: 60%;
+}

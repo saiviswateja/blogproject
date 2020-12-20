@@ -1,0 +1,12 @@
+body, html {
+  /* height: 100%;
+  margin: 0;
+  background-color:lightcyan; */
+  background-image: url(https://fairuzrazak.my/wp-content/uploads/2017/08/Oli-Blog-2.jpg);
+  background-size: cover;
+  background-repeat: repeat-y;
+}
+
+.logo_admin{
+    justify-content: center;
+}
