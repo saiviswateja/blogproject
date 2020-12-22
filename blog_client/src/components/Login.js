@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link,useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
@@ -12,7 +12,8 @@ function Login() {
             axios.post("http://localhost:5000/user/signin",userDetails)
             .then(res=>{
                 if(res.data.success){
-                    history.push("/");
+                    localStorage.setItem("user",JSON.stringify(res.data.user));
+                    history.push("/home");
                 }
                 else{
                     alert(`${res.data.error}`);

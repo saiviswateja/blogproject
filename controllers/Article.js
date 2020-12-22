@@ -16,6 +16,25 @@ exports.addArticle = (req,res)=>{
     });
 };
 
+exports.getArticle = (req,res)=>{
+    console.log(req.params);
+    Article.findById({_id:req.params.id})
+    .populate('articleWriter',"_id name")
+    .exec((err,article)=>{
+        console.log(article);
+        if(err){
+            return res.send({
+                success:false,
+                error:err
+            });
+        }
+        return res.send({
+            success:true,
+            article
+        })
+    })
+}
+
 exports.getArticles = (req,res)=>{
     Article.find({})
     .populate('articleWriter',"_id name")
