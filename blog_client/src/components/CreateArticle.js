@@ -1,8 +1,9 @@
-import axios from 'axios';
 import React,{useEffect,useState} from 'react';
 import {useHistory} from 'react-router-dom';
+import {createArticle} from '../actions/articleAction';
+import {connect} from 'react-redux';
 
-function CreateArticle() {
+function CreateArticle(props) {
     const history = useHistory();
     const [user,setUser] = useState({});
     useEffect(()=>{
@@ -22,15 +23,12 @@ function CreateArticle() {
             alert("Please provide all the details for publishing");
             return;
         }
-        axios.post("http://localhost:5000/article",{
+        props.createArticle({
             articleName,
             articleDescription,
             articleWriter
-        })
-        .then((res)=>{
-            alert("Thanks for publishing the article");
-            history.push("/home");
-        })
+        });
+        history.push('/home');
     }
     return (
         <div>
@@ -62,4 +60,7 @@ function CreateArticle() {
     )
 }
 
-export default CreateArticle;
+
+export default connect(null,{
+    createArticle
+})(CreateArticle);

@@ -1,68 +1,56 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
 import {useParams} from 'react-router-dom';
-import axios from 'axios';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {useHistory} from 'react-router-dom';
 import {Navbar} from 'react-bootstrap';
+import {fetchArticleById,likeArticle,dislikeArticle} from '../actions/articleAction'
+import {connect} from 'react-redux';
 
-function ShowArticle() {
+function ShowArticle(props) {
     const history = useHistory();
     let {id} = useParams();
-    const [likes,setLikes] = useState(0);
-    const [article,setArticle] = useState({});
     useEffect(() => {
-        axios.get("http://localhost:5000/article/"+id)
-             .then(res=>{
-                 setArticle(res.data.article)
-                 setLikes(res.data.article.likeCount)
-             })
+        console.log("came here to call");
+        props.fetchArticleById(id);
     }, []);
-    useEffect(()=>{
-        
-    },[likes])
     useEffect(()=>{
         if(localStorage.getItem("user")===null){
             history.push("/login");
         }
     })
-    const likeButtonPressed = ()=>{
-        axios.put("http://localhost:5000/article/like",{
-            "_id":id
-        })
-        .then(res=>{
-            setLikes(res.data.newArticle.likeCount);
-        })
+    const likeButtonPressed = (_id)=>{
+        props.likeArticle(props.article._id);
     }
     const dislikeButtonPressed = ()=>{
-        if(likes===0){
+        console.log("dislike pressed");
+        if(props.article.likeCount===0){
             return
         }
-        axios.put("http://localhost:5000/article/dislike",{
-            "_id":id
-        })
-        .then(res=>{
-            setLikes(res.data.newArticle.likeCount);
-        })
+        props.dislikeArticle(props.article._id);
     }
 
     return (
         <div>
-            <div className="row logo_admin" style={{marginTop:"4%"}}>
+            {console.log(props.article)}
+            {
+                props.article && <div>
+                    {console.log(props.article)}
+                <div className="row logo_admin" style={{marginTop:"4%"}}>
                     <div className="card" style={{width:"60rem"}}>
                         <div className="card-body">
                             <div className="row title">
-                                <h3 className="card-title">{article.articleName}</h3>
+                                <h3 className="card-title">{props.article.articleName}</h3>
                             </div>
                             <div className="row">
-                                <p>{article.articleDescription}</p>
+                                <p>{props.article.articleDescription}</p>
                             </div>
                         </div>
                         <center>
                             <button type="button" class="btn btn-primary btn-circle btn-xl" onClick={likeButtonPressed} style={{marginRight:"1%"}}><ThumbUpAltIcon fontSize="large"></ThumbUpAltIcon></button>
                             <button type="button" class="btn btn-warning btn-circle btn-xl" onClick={dislikeButtonPressed} style={{marginRight:"1%"}}><ThumbDownIcon fontSize="large"></ThumbDownIcon></button>
-                             <b>{likes}</b> likes so far
+                             <b>{props.article.likeCount}</b> likes so far
                         </center>
                     </div>
                 </div>    
@@ -71,9 +59,20 @@ function ShowArticle() {
                         localStorage.clear();
                         history.push('/login')
                     }}>Log Out</button> 
-            </Navbar>
+            </Navbar></div>
+            }
         </div>
     )
 }
 
-export default ShowArticle
+const mapStateToProps = (state)=>{
+    return {
+        article:state.article
+    }
+}
+
+export default connect(mapStateToProps,{
+    fetchArticleById,
+    likeArticle,
+    dislikeArticle
+})(ShowArticle)

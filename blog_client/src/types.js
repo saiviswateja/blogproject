@@ -1,0 +1,5 @@
+export const FETCH_BLOGS = "FETCH_BLOGS";
+export const FETCH_BLOG_BY_ID = "FETCH_BLOG_BY_ID";
+export const LIKE_ARTICLE = "LIKE_ARTICLE";
+export const DISLIKE_ARTICLE = "DISLIKE_ARTICLE";
+export const CREATE_ARTICLE = "CREATE_ARTICLE";

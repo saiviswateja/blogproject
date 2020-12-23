@@ -7,8 +7,12 @@ import Login from './components/Login';
 import CreateArticle from './components/CreateArticle';
 import Articles from './components/Articles';
 import ShowArticle from './components/ShowArticle';
+import store from './store';
+import {Provider} from "react-redux";
+
 function App() {
   return (
+    <Provider store={store}>
       <Router>
         <NavigationBar/>
         <Switch>
@@ -32,6 +36,7 @@ function App() {
             </Route>
         </Switch>
       </Router>
+      </Provider>
   );
 }
 

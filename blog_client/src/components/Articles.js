@@ -1,10 +1,10 @@
-import React,{useEffect,useState} from 'react';
-import axios from 'axios';
+import React,{useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {Navbar} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {fetchArticles} from '../actions/articleAction';
 
-function Articles() {
-    const [articles,setArticles] = useState([]);
+function Articles(props) {
     const history = useHistory();
     useEffect(()=>{
         if(localStorage.getItem("user")===null){
@@ -12,16 +12,12 @@ function Articles() {
         }
     })
     useEffect(() => {
-        axios.get("http://localhost:5000/article")
-             .then(res=>{
-                 console.log(res.data)
-                 setArticles(res.data.articles);
-             })
+        props.fetchArticles();
     }, []);
     return (
         <div>
             {
-                articles.map(article=>(
+                props.articles.map(article=>(
                     <div className="row logo_admin" style={{marginTop:"1%"}}>
                         <div className="card" style={{width:"60rem"}}>
                             <div className="card-body">
@@ -49,4 +45,13 @@ function Articles() {
     )
 }
 
-export default Articles
+const mapStateToProps = (state)=>{
+    console.log(state);
+    return {
+        articles:state.articles
+    }
+}
+
+export default connect(mapStateToProps,{
+    fetchArticles
+})(Articles);
